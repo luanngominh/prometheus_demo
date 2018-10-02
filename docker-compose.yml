@@ -1,0 +1,68 @@
+version: '3.5'
+
+services:
+  
+  prometheus:
+    image: prometheus
+    container_name: prometheus
+    ports:
+      - 9000:9090
+    build:
+      context: ./prometheus
+      dockerfile: ./prometheus/Dockerfile
+    networks:
+      prometheus:
+        ipv4_address: 1.1.1.5
+
+  grafana: 
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 2700:3000
+    networks:
+      prometheus:
+        ipv4_address: 1.1.1.2
+  
+  node_exporter:
+    image: prom/node-exporter
+    container_name: node_exporter
+    ports:
+      - 9100:9100
+    volumes:
+      - '/proc:/host/proc'
+      - '/sys:/host/sys'
+      - '/:/rootfs'
+    networks:
+      prometheus:
+        ipv4_address: 1.1.1.3
+
+  cadvisor:
+    image: google/cadvisor
+    container_name: cadvisor
+    ports:
+      - 8080:8080
+    volumes:
+      - '/:/rootfs:ro'
+      - '/var/run:/var/run:ro'
+      - '/sys:/sys:ro'
+      - '/var/lib/docker/:/var/lib/docker:ro'
+      - '/dev/disk/:/dev/disk:ro'
+    networks:
+      prometheus:
+        ipv4_address: 1.1.1.4
+
+
+
+
+# postgres monitoring
+# go custom
+# nginx monitoring
+# alert manager
+
+networks:
+  prometheus:
+    name: prometheus-nw
+    ipam:
+      driver: default
+      config:
+        - subnet: 1.1.1.0/24
