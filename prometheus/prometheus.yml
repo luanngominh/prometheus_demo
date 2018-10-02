@@ -19,4 +19,4 @@ scrape_configs:
   
   - job_name: 'database'
     static_configs:
-    - targets: ['1.1.1.6:9187']
+    - targets: ['1.1.1.7:9187']

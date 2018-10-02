@@ -9,8 +9,7 @@ services:
     ports:
       - 9000:9090
     build:
-      context: prometheus
-      dockerfile: prometheus/Dockerfile
+      context: .
     networks:
       prometheus:
         ipv4_address: 1.1.1.5
@@ -74,13 +73,21 @@ services:
     restart: always
     container_name: meocon_exporter
     environment:
-      DATA_SOURCE_NAME: postgresql://meocon:123@1.1.1.6:5432/?sslmode=disable
+      DATA_SOURCE_NAME: "postgresql://meocon:123@1.1.1.6:5432/postgres?sslmode=disable"
     ports:
       - 9187:9187
     networks:
       prometheus:
         ipv4_address: 1.1.1.7
 
+  adminer:
+    image: adminer
+    ports:
+      - 8777:8080
+    restart: always
+    networks:
+      prometheus:
+        ipv4_address: 1.1.1.8
 
 # go custom
 # nginx monitoring
