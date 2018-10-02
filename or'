@@ -1,0 +1,12 @@
+[33mcommit 91df6e49a75e9792ec0de3f8765b719ad5fd578a[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Luan Ngo Minh <root@lulu>
+Date:   Tue Oct 2 13:37:47 2018 -0400
+
+    add docker compose
+
+[33mcommit e1f3cb66fbc1f2393088e1da804c7061c5f93b2d[m
+Author: Luan Ngo Minh <root@lulu>
+Date:   Mon Oct 1 02:42:14 2018 -0400
+
+    - Add docker compose file
+    - Add dockerfile for prometheus
