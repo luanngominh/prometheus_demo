@@ -89,9 +89,18 @@ services:
       prometheus:
         ipv4_address: 1.1.1.8
 
-# go custom
+  go_custom:
+    image: go_custom
+    build:
+      context: ./go_exporter
+      dockerfile: ./go_exporter/dockerfile
+    ports:
+      - 9876:9876
+    networks:
+      prometheus:
+        ipv4_address: 1.1.1.9
+      
 # nginx monitoring
-# alert manager
 
 networks:
   prometheus:
