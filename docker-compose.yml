@@ -101,7 +101,13 @@ services:
       prometheus:
         ipv4_address: 1.1.1.9
       
-# nginx monitoring
+  nginx_exporter:
+    image: nginx/nginx-prometheus-exporter
+    ports:
+      - 9113:9113
+    networks:
+      prometheus:
+        ipv4_address: 1.1.1.10
 
 networks:
   prometheus:
