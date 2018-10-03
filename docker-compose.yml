@@ -102,12 +102,17 @@ services:
         ipv4_address: 1.1.1.9
       
   nginx_exporter:
-    image: nginx/nginx-prometheus-exporter
+    image: nginx/nginx-prometheus-exporter:0.1.0
+    container_name: nginx_exporter
     ports:
       - 9113:9113
+    command: -nginx.scrape-uri=http://1.1.1.10:8080/stub_status
     networks:
       prometheus:
-        ipv4_address: 1.1.1.10
+        ipv4_address: 1.1.1.11
+
+  lua_nginx:
+      
 
 networks:
   prometheus:

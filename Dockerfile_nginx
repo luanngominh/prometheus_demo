@@ -1,11 +1,35 @@
-FROM alpine:3.6
+FROM centos:7
 
-RUN apk add --no-cache nginx-mod-http-lua
+WORKDIR /
 
-# Create folder for PID file
-RUN mkdir -p /run/nginx
+RUN yum install pcre-devel luajit-devel -y
+RUN yum install wget -y
 
-# Add our nginx conf
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+RUN wget https://github.com/simpl/ngx_devel_kit/archive/v0.3.0.tar.gz
+RUN tar -xvzf v0.3.0.tar.gz
+ 
+RUN wget https://github.com/openresty/lua-nginx-module/archive/v0.10.7.tar.gz
+RUN tar -xvzf v0.10.7.tar.gz
+ 
+# Add nginx repo
+COPY nginx/nginx.repo /etc/nginx.repo
+# Install EPEL and Remi
+RUN yum -y install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+# Update server
+RUN yum -y update
+#Install nginx
+RUN yum -y install nginx
 
-CMD ["nginx"]
+COPY nginx/nginx-mod-http-lua.rpm /nginx-mod-http-lua.rpm
+RUN rpm -i nginx-mod-http-lua.rpm
+
+#Copy lua module
+RUN mkdir -p /etc/nginx/nginx-lua-prometheus
+ADD nginx/prometheus.lua /etc/nginx/nginx-lua-prometheus
+
+#Add nginx config
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 9154
+
+CMD ["/usr/sbin/nginx"]
