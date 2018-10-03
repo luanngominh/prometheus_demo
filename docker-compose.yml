@@ -10,6 +10,7 @@ services:
       - 9000:9090
     build:
       context: .
+      dockerfile: Dockerfile_prometheus
     networks:
       prometheus:
         ipv4_address: 1.1.1.5
@@ -92,8 +93,8 @@ services:
   go_custom:
     image: go_custom
     build:
-      context: ./go_exporter
-      dockerfile: ./go_exporter/dockerfile
+      context: .
+      dockerfile: Dockerfile_go_exporter
     ports:
       - 9876:9876
     networks:

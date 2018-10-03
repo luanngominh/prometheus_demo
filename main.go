@@ -24,6 +24,7 @@ func init() {
 
 func main() {
 	http.Handle("/metrics", promhttp.Handler())
+
 	http.HandleFunc("/xxx", func(w http.ResponseWriter, q *http.Request) {
 		xxCounter.With(prometheus.Labels{"page": "xx_page"}).Inc()
 		w.Write([]byte("meow meow meow"))
