@@ -16,7 +16,8 @@
 ## Nginx
 * HTTP Connection State: `nginx_http_connections`
 * Letancy: `sum by(le)(rate(nginx_http_request_duration_seconds_bucket[1m]))`
-* HTTP Status code per sercond: `rate(nginx_http_requests_total[1m])`
+* HTTP Status code per second, not 404: `rate(nginx_http_requests_total{stats!="404"}[1m])`
+* HTTP Status code 404 per second: `rate(nginx_http_requests_total{status="404"}[1m])`
 ## Custom Prometheus Exporter
 * xxx page per second during 1 mitute: `rate(page_counter{page="xx_page"}[1m])`
 * yy page per second during 1 mitute: `rate(page_counter{page="yy_page"}[1m])`
