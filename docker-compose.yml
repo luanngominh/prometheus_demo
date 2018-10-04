@@ -35,6 +35,7 @@ services:
       - '/proc:/host/proc'
       - '/sys:/host/sys'
       - '/:/rootfs'
+      - '/home:/home'
     networks:
       prometheus:
         ipv4_address: 1.1.1.3
@@ -92,6 +93,8 @@ services:
 
   go_custom:
     image: go_custom
+    restart: always
+    container_name: go_custom
     build:
       context: .
       dockerfile: Dockerfile_go_exporter
@@ -100,19 +103,18 @@ services:
     networks:
       prometheus:
         ipv4_address: 1.1.1.9
-      
-  nginx_exporter:
-    image: nginx/nginx-prometheus-exporter:0.1.0
-    container_name: nginx_exporter
-    ports:
-      - 9113:9113
-    command: -nginx.scrape-uri=http://1.1.1.10:8080/stub_status
-    networks:
-      prometheus:
-        ipv4_address: 1.1.1.11
 
   lua_nginx:
-      
+    image: lua_nginx
+    build:
+      context: .
+      dockerfile: Dockerfile_nginx
+    ports:
+      - 9145:9145
+    networks:
+      prometheus:
+        ipv4_address: 1.1.1.10
+
 
 networks:
   prometheus:

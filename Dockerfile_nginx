@@ -1,35 +1,23 @@
-FROM centos:7
+FROM alpine:3.6
 
-WORKDIR /
+RUN apk add --no-cache nginx-mod-http-lua
 
-RUN yum install pcre-devel luajit-devel -y
-RUN yum install wget -y
+# Delete default config
+RUN rm -r /etc/nginx/conf.d && rm /etc/nginx/nginx.conf
 
-RUN wget https://github.com/simpl/ngx_devel_kit/archive/v0.3.0.tar.gz
-RUN tar -xvzf v0.3.0.tar.gz
- 
-RUN wget https://github.com/openresty/lua-nginx-module/archive/v0.10.7.tar.gz
-RUN tar -xvzf v0.10.7.tar.gz
- 
-# Add nginx repo
-COPY nginx/nginx.repo /etc/nginx.repo
-# Install EPEL and Remi
-RUN yum -y install http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
-# Update server
-RUN yum -y update
-#Install nginx
-RUN yum -y install nginx
+# Create folder for PID file
+RUN mkdir -p /run/nginx
 
-COPY nginx/nginx-mod-http-lua.rpm /nginx-mod-http-lua.rpm
-RUN rpm -i nginx-mod-http-lua.rpm
+# Add our nginx conf
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 
-#Copy lua module
-RUN mkdir -p /etc/nginx/nginx-lua-prometheus
-ADD nginx/prometheus.lua /etc/nginx/nginx-lua-prometheus
+#Add lua module
+RUN mkdir /etc/nginx/nginx-lua-prometheus
+ADD ./nginx/prometheus.lua /etc/nginx/nginx-lua-prometheus/
 
-#Add nginx config
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
+#Add metrics config
+ADD ./nginx/metrics.conf /etc/nginx/conf.d/
 
-EXPOSE 9154
+EXPOSE 9145
 
-CMD ["/usr/sbin/nginx"]
+CMD ["nginx"]

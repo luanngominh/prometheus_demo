@@ -2,5 +2,6 @@ FROM alpine:3.7
 RUN apk add --no-cache ca-certificates
 WORKDIR /
 COPY go_exporter/server /server
-EXPOSE 1493
+RUN chmod +x server
+EXPOSE 9876
 ENTRYPOINT ["/server"]

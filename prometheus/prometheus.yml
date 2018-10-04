@@ -7,7 +7,7 @@ global:
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
-    - targets: ['localhost:9090']
+    - targets: ['1.1.1.5:9090']
 
   - job_name: 'node'
     static_configs:
@@ -20,3 +20,7 @@ scrape_configs:
   - job_name: 'database'
     static_configs:
     - targets: ['1.1.1.7:9187']
+
+  - job_name: 'web'
+    static_configs:
+    - targets: ['1.1.1.10:9145', '1.1.1.9:9876']
